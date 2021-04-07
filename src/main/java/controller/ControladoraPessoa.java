@@ -5,10 +5,16 @@ import model.vo.PessoaVO;
 
 public class ControladoraPessoa {
 
-	public PessoaVO consultarPessoaController(int idPessoa) {
+	public PessoaVO consultarPessoaController(PessoaVO pesquisadorInformadoPeloUsuario) {
 		PessoaBO pessoaBO = new PessoaBO();
-		return pessoaBO.consultarPessoaPorIdPessoa(idPessoa);
+		return pessoaBO.consultarPessoaPorNomeAndCpfBO(pesquisadorInformadoPeloUsuario);
 	}
+
+	public int cadastrarPessoaController(PessoaVO pessoaVO) {
+		PessoaBO pessoaBO = new PessoaBO();
+		return pessoaBO.cadastrarPessoaBO(pessoaVO);
+	}
+
 
 	
 

@@ -46,16 +46,16 @@ public class MenuVacinacao {
 	}
 	
 	private int apresentarOpcoesMenu() {
-		StringBuilder msg = new  StringBuilder();
-		msg.append("Opções:\n");
-		msg.append(OPCAO_MENU_PESSOA + " - Menu Pessoa \n");
-		msg.append(OPCAO_MENU_VACINA + " - Menu Vacina \n");
-		msg.append(OPCAO_MENU_APLICACAO_VACINA + " - Menu Aplicação Vacina \n");
-		msg.append(OPCAO_MENU_RELATORIO + " - Menu Relatório \n");
-		msg.append(OPCAO_MENU_SAIR + " - Sair \n");
-		msg.append("\nDigite a opção: ");
+		String mensagem = "";
+		mensagem += "Opções:\n";
+		mensagem += OPCAO_MENU_PESSOA + " - Menu Pessoa \n";
+		mensagem += OPCAO_MENU_VACINA + " - Menu Vacina \n";
+		mensagem += OPCAO_MENU_APLICACAO_VACINA + " - Menu Aplicação Vacina \n";
+		mensagem += OPCAO_MENU_RELATORIO + " - Menu Relatório \n";
+		mensagem += OPCAO_MENU_SAIR + " - Sair \n";
+		mensagem += "Digite a opção: \n";		
 
-		String valorInformadoPeloUsuario = JOptionPane.showInputDialog(null, msg, "Menu Principal Vacinação",
+		String valorInformadoPeloUsuario = JOptionPane.showInputDialog(null, mensagem, "Menu Vacinação",
 				JOptionPane.INFORMATION_MESSAGE);
 
 		int opcaoSelecionada = StringUtil.formatarStringParaInteiro(valorInformadoPeloUsuario);

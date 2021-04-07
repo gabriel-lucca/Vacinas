@@ -11,12 +11,12 @@ public class VacinaVO {
 	private String paisDeOrigem;
 	private EstagioPesquisa estagioPesquisa;
 	private LocalDate dataInicioPesquisa;
-	private PessoaVO pesquisadorResponsavel;
+	private int pesquisadorResponsavel;
 	private FaseVacina fase;
 	private int quantidadeDoses;
 
 	public VacinaVO(Integer idVacina, String nome, String paisDeOrigem, EstagioPesquisa estagioPesquisa,
-			LocalDate dataInicioPesquisa, PessoaVO pesquisadorResponsavel, FaseVacina fase, int quantidadeDoses) {
+			LocalDate dataInicioPesquisa, int pesquisadorResponsavel, FaseVacina fase, int quantidadeDoses) {
 		super();
 		this.idVacina = idVacina;
 		this.nome = nome;
@@ -32,13 +32,6 @@ public class VacinaVO {
 		super();
 	}
 
-	@Override
-	public String toString() {
-		return " idVacina = " + this.idVacina + "\nnome = " + this.nome + "\npais De Origem = " + this.paisDeOrigem
-				+ "\nestagio Pesquisa = " + this.estagioPesquisa + "\ndata Inicio Pesquisa = " + this.dataInicioPesquisa
-				+ "\npesquisador Responsavel = " + this.pesquisadorResponsavel.getIdPessoa() + "\nfase = " + this.fase + "\nquantidade Doses = "
-				+ this.quantidadeDoses;
-	}
 
 	public Integer getIdVacina() {
 		return idVacina;
@@ -80,11 +73,11 @@ public class VacinaVO {
 		this.dataInicioPesquisa = dataInicioPesquisa;
 	}
 
-	public PessoaVO getPesquisadorResponsavel() {
+	public int getPesquisadorResponsavel() {
 		return pesquisadorResponsavel;
 	}
 
-	public void setPesquisadorResponsavel(PessoaVO pesquisadorResponsavel) {
+	public void setPesquisadorResponsavel(int pesquisadorResponsavel) {
 		this.pesquisadorResponsavel = pesquisadorResponsavel;
 	}
 
@@ -102,6 +95,14 @@ public class VacinaVO {
 
 	public void setQuantidadeDoses(int quantidadeDoses) {
 		this.quantidadeDoses = quantidadeDoses;
+	}
+	
+	@Override
+	public String toString() {	
+		return " idVacina = " + this.idVacina + "\nnome = " + this.nome + "\npais De Origem = " + this.paisDeOrigem
+				+ "\nestagio Pesquisa = " + this.estagioPesquisa + "\ndata Inicio Pesquisa = " + this.dataInicioPesquisa
+				+ "\npesquisador Responsavel = " + this.pesquisadorResponsavel + "\nfase = " + this.fase + "\nquantidade Doses = "
+				+ this.quantidadeDoses;
 	}
 	
 }

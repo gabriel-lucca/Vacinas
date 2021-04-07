@@ -1,9 +1,9 @@
 package model.Enum;
 
 public enum EstagioPesquisa {
-	INICIAL
-	, TESTES
-	, APLICACAO_MASSIVA;
+	INICIAL,
+	TESTES,
+	APLICACAO_MASSIVA;
 	
 	public static EstagioPesquisa getEstagioPesquisa(String estagioPesquisa){
         for(EstagioPesquisa estagio:EstagioPesquisa.values()){

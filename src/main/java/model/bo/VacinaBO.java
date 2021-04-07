@@ -7,21 +7,16 @@ import model.dao.VacinaDAO;
 
 public class VacinaBO {
 
-	/**
-	 * Verifica a possibilidade de cadastro da vacina no pais de origem
-	 * 
-	 * 
-	 * @return vacina cadastrada OU vacina ja existente
-	 */
+
 	public String cadastrarVacinaBO(VacinaVO vacinaVO) {
-		String retorno = "";
+		String retorno = "Erro ao verificar validação de Cadastro";
 		VacinaDAO vacinaDAO = new VacinaDAO();
 		
 		VacinaVO verificar = vacinaDAO.consultarVacinaPorNomeAndPais(vacinaVO);
 		
-		if (verificar.getPesquisadorResponsavel().getIdPessoa() > 0) {
+		if (verificar.getPesquisadorResponsavel() > 0) {
 			if (verificar.getIdVacina() != null && verificar.getIdVacina() != 0) {
-				retorno =  "Nome da Vacina já existente no pais, escolha outro nome.";
+				retorno =  "Nome da Vacina já existente no pais, por favor escolha outro nome.";
 			} else {
 				if (vacinaDAO.cadastrarVacina(vacinaVO) != null) {
 					retorno = "Vacina cadastrada com sucesso.";
@@ -30,34 +25,33 @@ public class VacinaBO {
 				}
 			}
 		} else {
-			retorno = "É necessario cadastrar um pesquisador responsavel primeiro";
+			retorno = "É necessário cadastrar um pesquisador responsável primeiro";
 		}
 		
 		return retorno;
 	}
 
 	public String excluirVacinaBO(VacinaVO vacinaVO) {
-		String retorno = "";
+		String retorno = "Erro ao verificar validação de exclusão";
 		VacinaDAO vacinaDAO = new VacinaDAO();
 		
 		VacinaVO verificar = vacinaDAO.consultarVacinaPorNomeAndPais(vacinaVO);
 		
-		if (verificar.getPesquisadorResponsavel() != null) {
-			if (verificar.getIdVacina() != null) {
-				if (vacinaDAO.excluirVacina(verificar.getIdVacina())) {
-					retorno = "Vacina excluida com sucesso.";
-				} else {
-					retorno = "Não foi possivel excluir a vacina.";
-				}
+		if (verificar.getIdVacina() != null) {
+			if (vacinaDAO.excluirVacina(verificar.getIdVacina())) {
+				retorno = "Vacina excluida com sucesso.";
 			} else {
-				retorno = "Vacina ainda não foi cadastrada no banco.";
+				retorno = "Não foi possivel excluir a vacina.";
 			}
+		} else {
+			retorno = "Vacina ainda não foi cadastrada no banco.";
 		}
+
 		return retorno;
 	}
 
 	public List<VacinaVO> consultarTodasVacinas() {
 		VacinaDAO vacinaDAO = new VacinaDAO();
-		return vacinaDAO.consultarTodasVacinas(false);
+		return vacinaDAO.consultarTodasVacinas();
 	}
 }

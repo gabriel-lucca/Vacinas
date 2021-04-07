@@ -12,25 +12,17 @@ import model.vo.AplicacaoVacinaVO;
 import model.vo.VacinaVO;
 import model.dao.Banco;
 
-/**
- * 
- * @author Gabriel
- *
- */
+
 public class AplicacaoVacinaDAO {
 	
-	/**
-	 * Cadastra uma nova aplicacao de vacina na Database
-	 * 
-	 * 
-	 * @return A aplicacao vacina cadastrada na Database
-	 */
+	
 	public AplicacaoVacinaVO cadastrarAplicacaoVacina(AplicacaoVacinaVO novaAplicacaoVacina) {
 		
-		String sql = "INSERT INTO APLICACAO_VACINA (IDVACINA, IDPESSOA, DATA_APLICACAO, NOTA) VALUES ( ?, ?, ?, ? )";
+		String sql = "INSERT INTO APLICACAO_VACINA "
+				+ "(IDVACINA, IDPESSOA, DATA_APLICACAO, NOTA) VALUES ( ?, ?, ?, ? )";
 		
 		try (Connection conn = Banco.getConnection();
-				PreparedStatement stmt = Banco.getPreparedStatementWithPk(conn, sql);) {
+			PreparedStatement stmt = Banco.getPreparedStatementWithPk(conn, sql);) {
 			stmt.setInt(1, novaAplicacaoVacina.getIdVacina().getIdVacina());
 			stmt.setInt(2, novaAplicacaoVacina.getIdPessoa());
 			stmt.setDate(3, java.sql.Date.valueOf(novaAplicacaoVacina.getDataAplicacao()));
@@ -50,12 +42,7 @@ public class AplicacaoVacinaDAO {
 		return novaAplicacaoVacina;
 	}
 	
-	/**
-	 * Atualiza uma aplicacao de vacina na Database
-	 * 
-	 * 
-	 * @return Se o registro foi atualizado na tabela ou não
-	 */
+	
 	public boolean atualizarAplicacaoVacina(AplicacaoVacinaVO atualizarAplicacaoVacina) {
 		
 		boolean atualizou = false;
@@ -63,7 +50,7 @@ public class AplicacaoVacinaDAO {
 		String sql = "UPDATE APLICACAO_VACINA SET IDVACINA = ?, IDPESSOA = ?, DATA_APLICACAO = ?, NOTA = ? WHERE ID_APLICACAO_VACINA = ?";
 		
 		try (Connection conn = Banco.getConnection();
-				PreparedStatement stmt = Banco.getPreparedStatement(conn, sql);) {
+			PreparedStatement stmt = Banco.getPreparedStatement(conn, sql);) {
 			stmt.setInt(1, atualizarAplicacaoVacina.getIdVacina().getIdVacina());
 			stmt.setInt(2, atualizarAplicacaoVacina.getIdPessoa());
 			stmt.setDate(3, java.sql.Date.valueOf(atualizarAplicacaoVacina.getDataAplicacao()));
@@ -81,13 +68,7 @@ public class AplicacaoVacinaDAO {
 		return atualizou;
 	}
 	
-	/**
-	 * Exclui uma aplicacao de vacina na Database
-	 * 
-	 * @param Recebe a PK da aplicacao vacina a ser excluida
-	 * 
-	 * @return  se o registro foi excluido ou nao da tabela
-	 */
+	
 	public boolean excluirAplicacaoVacina(Integer idAplicacaoVacina) {
 		
 		boolean excluiu = false;
@@ -95,7 +76,7 @@ public class AplicacaoVacinaDAO {
 		String sql = "DELETE FROM APLICACAO_VACINA WHERE ID_APLICACAO_VACINA = ?";
 		
 		try (Connection conn = Banco.getConnection();
-				PreparedStatement stmt = Banco.getPreparedStatement(conn, sql);) {
+			PreparedStatement stmt = Banco.getPreparedStatement(conn, sql);) {
 			
 			stmt.setInt(1, idAplicacaoVacina);
 			
@@ -107,13 +88,7 @@ public class AplicacaoVacinaDAO {
 		return excluiu;
 	}
 	
-	/**
-	 * Consulta uma aplicacao de vacina especifica
-	 * 
-	 * @param Recebe a PK da aplicacao de vacina a ser Consultada
-	 * 
-	 * @return Se o registro foi consultado ou não
-	 */
+	
 	public AplicacaoVacinaVO consultarAplicacaoVacinaPorId(Integer idAplicacaoVacina) {
 		
 		AplicacaoVacinaVO aplicacaoVacinaConsultada = null;
@@ -127,7 +102,7 @@ public class AplicacaoVacinaDAO {
 			ResultSet resultadoConsulta = stmt.executeQuery();
 			
 			if (resultadoConsulta.next()) {
-				aplicacaoVacinaConsultada = this.converterDoResultSet(resultadoConsulta, false);
+				aplicacaoVacinaConsultada = this.converterDoResultSet(resultadoConsulta);
 				
 			}
 		} catch (SQLException e) {
@@ -136,11 +111,8 @@ public class AplicacaoVacinaDAO {
 		return aplicacaoVacinaConsultada;
 	}
 
-	/**
-	 * Consulta todas as aplicações de vacinas cadastradas na Database
-	 * 
-	 * @return Retorna todas as aplicações de vacinas existentes
-	 */
+	
+	
 	public List<AplicacaoVacinaVO> consultarAplicacaoVacina() {
 		
 		List<AplicacaoVacinaVO> todasAplicacaoVacina = new ArrayList<AplicacaoVacinaVO>();
@@ -148,12 +120,12 @@ public class AplicacaoVacinaDAO {
 		String sql = "SELECT * FROM APLICACAO_VACINA";
 
 		try (Connection conn = Banco.getConnection();
-				PreparedStatement stmt = Banco.getPreparedStatement(conn, sql);) {
+			PreparedStatement stmt = Banco.getPreparedStatement(conn, sql);) {
 			
 			ResultSet resultadoConsulta = stmt.executeQuery();
 			
 			if (resultadoConsulta.next()) {
-				AplicacaoVacinaVO aplicacaoVacina = this.converterDoResultSet(resultadoConsulta, false);
+				AplicacaoVacinaVO aplicacaoVacina = this.converterDoResultSet(resultadoConsulta);
 				
 				todasAplicacaoVacina.add(aplicacaoVacina);
 			}
@@ -174,7 +146,7 @@ public class AplicacaoVacinaDAO {
 			ResultSet resultadoConsulta = stmt.executeQuery();
 			
 			while (resultadoConsulta.next()) {
-				AplicacaoVacinaVO aplicacao = this.converterDoResultSet(resultadoConsulta, false);
+				AplicacaoVacinaVO aplicacao = this.converterDoResultSet(resultadoConsulta);
 				aplicacoes.add(aplicacao);
 			}
 		} catch (SQLException e) {
@@ -183,16 +155,17 @@ public class AplicacaoVacinaDAO {
 		return aplicacoes;
 	}
 	
-	private AplicacaoVacinaVO converterDoResultSet(ResultSet resultadoConsulta, boolean idPEsquisadorComVacina) throws SQLException {
+	private AplicacaoVacinaVO converterDoResultSet(ResultSet resultadoConsulta) throws SQLException {
 		AplicacaoVacinaVO aplicacaoVacina = new AplicacaoVacinaVO();
 		aplicacaoVacina.setIdAplicacaoVacina(resultadoConsulta.getInt("ID_APLICACAO_VACINA"));
 		aplicacaoVacina.setDataAplicacao(resultadoConsulta.getDate("DATA_APLICACAO").toLocalDate());
 		aplicacaoVacina.setNota(NotaAplicacaoVacina.getNotaAplicacaoVacina(resultadoConsulta.getString("NOTA")));
 		aplicacaoVacina.setIdPessoa(resultadoConsulta.getInt("IDPESSOA"));
 		
-		VacinaDAO vDao = new VacinaDAO();
-		VacinaVO vacinaAplicada = vDao.consultarVacinaPorId(resultadoConsulta.getInt("IDVACINA"), idPEsquisadorComVacina);
+		VacinaDAO vacinaDao = new VacinaDAO();
+		VacinaVO vacinaAplicada = vacinaDao.consultarVacinaPorId(resultadoConsulta.getInt("IDVACINA"));
 		aplicacaoVacina.setIdVacina(vacinaAplicada);
+		
 		return aplicacaoVacina;
 	}
 

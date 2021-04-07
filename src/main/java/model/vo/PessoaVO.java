@@ -3,28 +3,27 @@ package model.vo;
 import java.time.LocalDate;
 import java.util.List;
 
-/**
- * 
- * @author Gabriel
- *
- */
+import model.Enum.TipoPessoa;
+
+
 public class PessoaVO {
 	private int idPessoa;
 	private String nome;
 	private LocalDate dataNascimento;
 	private char sexo;
 	private String cpf;
-	private int tipo;
+	private TipoPessoa tipoPessoa;
 	private List<AplicacaoVacinaVO> vacinacoes;
 	
-	public PessoaVO(String nome, LocalDate dataNascimento, char sexo, String cpf, int tipo,
+	public PessoaVO(int idPessoa, String nome, LocalDate dataNascimento, char sexo, String cpf, TipoPessoa tipoPessoa,
 			List<AplicacaoVacinaVO> vacinacoes) {
 		super();
+		this.idPessoa = idPessoa;
 		this.nome = nome;
 		this.dataNascimento = dataNascimento;
 		this.sexo = sexo;
 		this.cpf = cpf;
-		this.tipo = tipo;
+		this.tipoPessoa = tipoPessoa;
 		this.vacinacoes = vacinacoes;
 	}
 	
@@ -32,20 +31,7 @@ public class PessoaVO {
 		super();
 	}
 
-	@Override
-	public String toString() {
-		
-		String textoVacina = "";
-		
-		if (this.getVacinacoes() == null || this.getVacinacoes().isEmpty()) {
-			textoVacina = "Sem aplicção vacina";
-		} else {
-			textoVacina = vacinacoes.toString();
-		}
 
-		return "ID PESSOA " + this.getIdPessoa() + "\nNome = " + this.getNome() + "\ndata Nascimento = " + this.getDataNascimento() + "\nsexo = "
-				+ this.getSexo() + "\ncpf = " + this.getcpf() + "\ntipo = " + this.getTipo() + "\nvacinacoes = " + textoVacina;
-	}
 
 	public int getIdPessoa() {
 		return idPessoa;
@@ -87,12 +73,12 @@ public class PessoaVO {
 		this.cpf = cpf;
 	}
 
-	public int getTipo() {
-		return tipo;
+	public TipoPessoa getTipoPessoa() {
+		return tipoPessoa;
 	}
 
-	public void setTipo(int tipo) {
-		this.tipo = tipo;
+	public void setTipoPessoa(TipoPessoa tipoPessoa) {
+		this.tipoPessoa = tipoPessoa;
 	}
 
 	public List<AplicacaoVacinaVO> getVacinacoes() {
@@ -102,5 +88,12 @@ public class PessoaVO {
 	public void setVacinacoes(List<AplicacaoVacinaVO> vacinacoes) {
 		this.vacinacoes = vacinacoes;
 	}
+	
+	@Override
+	public String toString() {
+		return "ID PESSOA " + this.getIdPessoa() + "\nNome = " + this.getNome() + "\ndata Nascimento = " + this.getDataNascimento() + "\nsexo = "
+				+ this.getSexo() + "\ncpf = " + this.getcpf() + "\ntipo = " + this.getTipoPessoa() + "\nvacinacoes = ";
+	}
+
 	
 }

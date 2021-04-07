@@ -1,11 +1,11 @@
 package model.Enum;
 
 public enum NotaAplicacaoVacina {
-	PESSIMO
-	, RUIM
-	, REGULAR
-	, BOM
-	, OTIMO;
+	PESSIMO,
+	RUIM,
+	REGULAR,
+	BOM,
+	OTIMO;
 	
 	public static NotaAplicacaoVacina getNotaAplicacaoVacina(String notaAplicacaoVacina){
         for(NotaAplicacaoVacina nota:NotaAplicacaoVacina.values()){

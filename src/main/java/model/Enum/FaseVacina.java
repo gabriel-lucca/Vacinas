@@ -1,9 +1,9 @@
 package model.Enum;
 
 public enum FaseVacina {
-	SOMENTE_PESQUISADOR
-	, VOLUNTARIO
-	, PUBLICO_GERAL;
+	SOMENTE_PESQUISADOR,
+	VOLUNTARIO,
+	PUBLICO_GERAL;
 	
 	public static FaseVacina getFaseVacina(String faseVacina){
         for(FaseVacina fase:FaseVacina.values()){
