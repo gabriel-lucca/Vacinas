@@ -54,4 +54,25 @@ public class VacinaBO {
 		VacinaDAO vacinaDAO = new VacinaDAO();
 		return vacinaDAO.consultarTodasVacinas();
 	}
+	
+	
+
+	public String atualizarVacinaBO(VacinaVO vacinaVO) {
+		String retorno = "Erro ao verificar validação de atualização";
+		VacinaDAO vacinaDAO = new VacinaDAO();
+		
+		VacinaVO atualizar = vacinaDAO.consultarVacinaPorNomeAndPais(vacinaVO);
+		
+		if (atualizar.getIdVacina() != null) {
+			if (vacinaDAO.atualizarVacina(atualizar.getIdVacina())) {
+				retorno = "Vacina atualizada com sucesso.";
+			} else {
+				retorno = "Não foi possivel atualizar a vacina.";
+			}
+		} else {
+			retorno = "Vacina ainda não foi atualizada no banco.";
+		}
+
+		return retorno;
+	}
 }
