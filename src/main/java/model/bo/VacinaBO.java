@@ -7,16 +7,16 @@ import model.dao.VacinaDAO;
 
 public class VacinaBO {
 
-
+	
 	public String cadastrarVacinaBO(VacinaVO vacinaVO) {
-		String retorno = "Erro ao verificar validação de Cadastro";
+		String retorno = "";
 		VacinaDAO vacinaDAO = new VacinaDAO();
 		
 		VacinaVO verificar = vacinaDAO.consultarVacinaPorNomeAndPais(vacinaVO);
 		
 		if (verificar.getPesquisadorResponsavel() > 0) {
 			if (verificar.getIdVacina() != null && verificar.getIdVacina() != 0) {
-				retorno =  "Nome da Vacina já existente no pais, por favor escolha outro nome.";
+				retorno =  "Nome da Vacina já existente no pais, favor escolher outro nome.";
 			} else {
 				if (vacinaDAO.cadastrarVacina(vacinaVO) != null) {
 					retorno = "Vacina cadastrada com sucesso.";
@@ -25,9 +25,31 @@ public class VacinaBO {
 				}
 			}
 		} else {
-			retorno = "É necessário cadastrar um pesquisador responsável primeiro";
+			retorno = "É necessario cadastrar um pesquisador responsavel primeiro";
 		}
 		
+		return retorno;
+	}
+	
+	public String atualizarVacinaBO(VacinaVO atualizarVacina) {
+		String retorno = "Erro ao verificar validação de cadastro";
+		VacinaDAO vacinaDAO = new VacinaDAO();
+		
+		VacinaVO verificar = vacinaDAO.consultarVacinaPorNomeAndPais(atualizarVacina);
+		
+		if (verificar.getPesquisadorResponsavel() > 0) {
+			if (verificar.getIdVacina() != null && verificar.getIdVacina() != 0 && verificar.getIdVacina() != atualizarVacina.getIdVacina()) {
+				retorno =  "Nome da Vacina já existente no pais, favor escolher outro nome.";
+			} else {
+				if (vacinaDAO.atualizarVacinaDAO(atualizarVacina)) {
+					retorno = "Vacina atualizada com sucesso.";
+				} else {
+					retorno = "Não foi possivel atualizar vacina.";
+				}
+			}
+		} else {
+			retorno = "É necessario cadastrar um pesquisador responsavel primeiro";
+		}
 		return retorno;
 	}
 
@@ -38,7 +60,7 @@ public class VacinaBO {
 		VacinaVO verificar = vacinaDAO.consultarVacinaPorNomeAndPais(vacinaVO);
 		
 		if (verificar.getIdVacina() != null) {
-			if (vacinaDAO.excluirVacina(verificar.getIdVacina())) {
+			if (vacinaDAO.desativarVacina(vacinaVO.getIdVacina())) {
 				retorno = "Vacina excluida com sucesso.";
 			} else {
 				retorno = "Não foi possivel excluir a vacina.";
@@ -54,25 +76,5 @@ public class VacinaBO {
 		VacinaDAO vacinaDAO = new VacinaDAO();
 		return vacinaDAO.consultarTodasVacinas();
 	}
-	
-	
 
-	public String atualizarVacinaBO(VacinaVO vacinaVO) {
-		String retorno = "Erro ao verificar validação de atualização";
-		VacinaDAO vacinaDAO = new VacinaDAO();
-		
-		VacinaVO atualizar = vacinaDAO.consultarVacinaPorNomeAndPais(vacinaVO);
-		
-		if (atualizar.getIdVacina() != null) {
-			if (vacinaDAO.atualizarVacina(atualizar.getIdVacina())) {
-				retorno = "Vacina atualizada com sucesso.";
-			} else {
-				retorno = "Não foi possivel atualizar a vacina.";
-			}
-		} else {
-			retorno = "Vacina ainda não foi atualizada no banco.";
-		}
-
-		return retorno;
-	}
 }

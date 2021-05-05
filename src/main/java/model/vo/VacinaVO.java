@@ -6,6 +6,7 @@ import model.Enum.EstagioPesquisa;
 import model.Enum.FaseVacina;
 
 public class VacinaVO {	
+	
 	private Integer idVacina;
 	private String nome;
 	private String paisDeOrigem;
@@ -14,9 +15,12 @@ public class VacinaVO {
 	private int pesquisadorResponsavel;
 	private FaseVacina fase;
 	private int quantidadeDoses;
+	private boolean vacinaAtiva;
+	
 
 	public VacinaVO(Integer idVacina, String nome, String paisDeOrigem, EstagioPesquisa estagioPesquisa,
-			LocalDate dataInicioPesquisa, int pesquisadorResponsavel, FaseVacina fase, int quantidadeDoses) {
+			LocalDate dataInicioPesquisa, int pesquisadorResponsavel, FaseVacina fase, int quantidadeDoses,
+			boolean vacinaAtiva) {
 		super();
 		this.idVacina = idVacina;
 		this.nome = nome;
@@ -26,12 +30,26 @@ public class VacinaVO {
 		this.pesquisadorResponsavel = pesquisadorResponsavel;
 		this.fase = fase;
 		this.quantidadeDoses = quantidadeDoses;
+		this.vacinaAtiva = vacinaAtiva;
 	}
 
 	public VacinaVO() {
 		super();
 	}
-
+	
+	@Override
+	public String toString() {
+		String ativo = "Desativada";
+		
+		if (this.isVacinaAtiva()) {
+			ativo = "Ativada";
+		}
+		
+		return " idVacina = " + this.idVacina + "\nnome = " + this.nome + "\npais De Origem = " + this.paisDeOrigem
+				+ "\nestagio Pesquisa = " + this.estagioPesquisa + "\ndata Inicio Pesquisa = " + this.dataInicioPesquisa
+				+ "\npesquisador Responsavel = " + this.pesquisadorResponsavel + "\nfase = " + this.fase + "\nquantidade Doses = "
+				+ this.quantidadeDoses + "\nvacina ativa = " + ativo;
+	}
 
 	public Integer getIdVacina() {
 		return idVacina;
@@ -81,6 +99,14 @@ public class VacinaVO {
 		this.pesquisadorResponsavel = pesquisadorResponsavel;
 	}
 
+	public boolean isVacinaAtiva() {
+		return vacinaAtiva;
+	}
+
+	public void setVacinaAtiva(boolean vacinaAtiva) {
+		this.vacinaAtiva = vacinaAtiva;
+	}
+
 	public FaseVacina getFase() {
 		return fase;
 	}
@@ -95,14 +121,6 @@ public class VacinaVO {
 
 	public void setQuantidadeDoses(int quantidadeDoses) {
 		this.quantidadeDoses = quantidadeDoses;
-	}
-	
-	@Override
-	public String toString() {	
-		return " idVacina = " + this.idVacina + "\nnome = " + this.nome + "\npais De Origem = " + this.paisDeOrigem
-				+ "\nestagio Pesquisa = " + this.estagioPesquisa + "\ndata Inicio Pesquisa = " + this.dataInicioPesquisa
-				+ "\npesquisador Responsavel = " + this.pesquisadorResponsavel + "\nfase = " + this.fase + "\nquantidade Doses = "
-				+ this.quantidadeDoses;
 	}
 	
 }

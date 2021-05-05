@@ -1,37 +1,50 @@
 package view;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
-import java.awt.List;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.BorderLayout;
+import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.JButton;
 import javax.swing.JTable;
 import java.awt.Color;
+import javax.swing.JButton;
 import javax.swing.table.DefaultTableModel;
 
-import controller.ControladoraVacina;
-import model.vo.VacinaVO;
 
-public class TelaListagemVacina extends JFrame {
+import controller.ControladoraVacina;
+import model.vo.SeletorVacinaVO;
+import model.vo.VacinaVO;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import javax.swing.SwingConstants;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+
+public class TelaListagemVacina extends JFrame  {
 
 	private JPanel contentPane;
-	private JTable tblVacinas;
+	private JTable tblListaVacina;
 	private JButton btnExcluirVacina;
 	private JButton btnEditarVacina;
-	private ControladoraVacina controlador = new ControladoraVacina();
-	private String[] nomesColunas = { "id", "país", "nome", "responsável", "qntdDoses" };
-	private JButton btnExcluir;
-	private JButton btnEditar;
+	private List<VacinaVO> vacinas;
+	private ControladoraVacina controladoraVacina = new ControladoraVacina();
+	private String[] nomesColunas = {"Nome da vacina", "Pesquisador responsável", "pais de origem", "estagio da pesquisa", "fase", "Quatidade de doses", "Data de inicio"};
 
+	DateTimeFormatter dataFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+	private JTextField txtNomePais;
+	private JTextField txtNomeVacina;
+	private JTextField txtDataInicioPesquisa;
+	private JTextField textField;
+	
 
+	
 	/**
 	 * Launch the application.
 	 */
@@ -53,112 +66,155 @@ public class TelaListagemVacina extends JFrame {
 	 */
 	public TelaListagemVacina() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 485, 342);
+		setBounds(100, 100, 999, 488);
 		contentPane = new JPanel();
-		contentPane.setBackground(Color.LIGHT_GRAY);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JButton btnConsultar = new JButton("Consultar todas");
-		btnConsultar.addActionListener(new ActionListener() {
+		JButton btnConsultarVacinas = new JButton("Consultar vacinas");
+		btnConsultarVacinas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				//atualizarTabelaVacinas();
+				atualizarTabelaVacina();
 			}
-
+		});
+		btnConsultarVacinas.setBounds(277, 87, 294, 57);
+		contentPane.add(btnConsultarVacinas);
 		
-			}
-		);
-		btnConsultar.setBounds(217, 11, 141, 23);
-		contentPane.add(btnConsultar);
-		
-
-		btnExcluir = new JButton("Excluir vacina");
-		btnExcluir.setBounds(57, 254, 113, 23);
-		contentPane.add(btnExcluir);
-		
-		btnExcluir.addActionListener(new ActionListener() {
-			@Override
+		btnExcluirVacina = new JButton("Excluir vacina");
+		btnExcluirVacina.setEnabled(false);
+		btnExcluirVacina.setBounds(113, 392, 205, 36);
+		btnExcluirVacina.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int indiceSelecionadoNaTabela = tblVacinas.getSelectedRow();
-				VacinaVO vacinaSelecionada = vacinas.get(indiceSelecionadoNaTabela - 1);
-
-				String perguntaExclusao = "Deseja excluir o endereço: " + vacinaSelecionada.toString() + "?";
+				int indiceSelecionadoNaTablela = tblListaVacina.getSelectedRow();
+				VacinaVO vacinaSelecionada = vacinas.get(indiceSelecionadoNaTablela - 1);
+				
+				String perguntaExclusao = "Deseja excluir a vacina: " + vacinaSelecionada.toString() + "?";
 				
 				int opcaoSelecionada = JOptionPane.showConfirmDialog(null, perguntaExclusao, "Está certo disso?", JOptionPane.YES_NO_OPTION);
-
-				if(opcaoSelecionada == JOptionPane.YES_OPTION) {
-					String mensagem = controlador.excluir(vacinaSelecionada.getIdVacina());
+				
+				if (opcaoSelecionada == JOptionPane.YES_OPTION) {
+					String mensagem = controladoraVacina.excluirVacinaController(vacinaSelecionada);
 					JOptionPane.showMessageDialog(null, mensagem);
-					//atualizarTabelaEnderecos();
+					//atualizarTabelaVacina();
+					limparTabelaVacina();
 				}
+				
 			}
 		});
+		contentPane.add(btnExcluirVacina);
 		
-		contentPane.add(btnExcluir);
-		
-		btnEditar = new JButton("Editar vacina");
-		btnEditar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				VacinaVO vacinaSelecionada = vacinas.get(tblVacinas.getSelectedRow() - 1);
+		btnEditarVacina = new JButton("Editar vacina");
+		btnEditarVacina.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				VacinaVO vacinaSelecionada = vacinas.get(tblListaVacina.getSelectedRow() - 1);
+				TelaCadastroVacina cadastroVacina = new TelaCadastroVacina(vacinaSelecionada);
+				cadastroVacina.getJanela().setVisible(true);
 			}
 		});
-		btnEditar.setEnabled(false);
-		btnEditar.setBounds(251, 254, 119, 23);
-		contentPane.add(btnEditar);
-	
+		btnEditarVacina.setEnabled(false);
+		btnEditarVacina.setBounds(576, 392, 205, 36);
+		contentPane.add(btnEditarVacina);
 		
-		tblVacinas = new JTable();
-		this.limparTabelaVacinas();
+		tblListaVacina = new JTable();
+		this.limparTabelaVacina();
 		
-		tblVacinas = new JTable(tblVacinas.getModel()) {
-			public boolean isCellEditable(int rowIndex, int colIndex) {
+		tblListaVacina.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+			}
+		) {
+			@Override
+			public boolean isCellEditable(int rowIndex, int collIndex) {
 				return false;
 			}
-		};
-		tblVacinas.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent e) {
-				int indiceSelecionado = tblVacinas.getSelectedRow();
+		});
+		tblListaVacina.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				int indiceSelecionado = tblListaVacina.getSelectedRow();
 				
 				if (indiceSelecionado > 0) {
-					btnEditar.setEnabled(true);
-					btnExcluir.setEnabled(true);
+					btnEditarVacina.setEnabled(true);
+					btnExcluirVacina.setEnabled(true);
 				} else {
-					btnEditar.setEnabled(false);
-					btnExcluir.setEnabled(false);
+					btnEditarVacina.setEnabled(false);
+					btnExcluirVacina.setEnabled(false);
 				}
 			}
 		});
+		tblListaVacina.setBounds(10, 163, 963, 218);
+		contentPane.add(tblListaVacina);
 		
-		tblVacinas.setBounds(10, 45, 415, 175);
-		contentPane.add(tblVacinas);
-
+		JLabel lblNewLabel = new JLabel("Nome do pais");
+		lblNewLabel.setBounds(34, 11, 136, 14);
+		contentPane.add(lblNewLabel);
+		
+		txtNomePais = new JTextField();
+		txtNomePais.setBounds(34, 36, 243, 20);
+		contentPane.add(txtNomePais);
+		txtNomePais.setColumns(10);
+		
+		JLabel lblNewLabel_1 = new JLabel("Nome da vacina");
+		lblNewLabel_1.setBounds(328, 11, 136, 14);
+		contentPane.add(lblNewLabel_1);
+		
+		txtNomeVacina = new JTextField();
+		txtNomeVacina.setBounds(328, 36, 243, 20);
+		contentPane.add(txtNomeVacina);
+		txtNomeVacina.setColumns(10);
+		
+		JLabel lblNewLabel_2 = new JLabel("Data de in\u00EDcio da pesquisa");
+		lblNewLabel_2.setBounds(625, 11, 182, 14);
+		contentPane.add(lblNewLabel_2);
+		
+		textField = new JTextField();
+		textField.setColumns(10);
+		textField.setBounds(625, 35, 243, 20);
+		contentPane.add(textField);
+		
 	}
-	
-	protected void atualizarTabelaVacinas() {
-		vacinas = controladoraVacina.consultarTodos();
-		this.limparTabelaEnderecos();
+
+	protected void atualizarTabelaVacina() {
+		SeletorVacinaVO seletor = new SeletorVacinaVO();
 		
-		DefaultTableModel model = (DefaultTableModel) this.tblVacinas.getModel();
+		seletor.setNomePais(txtNomePais.getText());
+		seletor.setNomeVacina(txtNomeVacina.getText());
+		seletor.setDataInicioPesquisa(LocalDate.parse(txtDataInicioPesquisa.getText(), dataFormatter));
 		
-		for(VacinaVO end: this.vacinaVO) {
-			Object[] novaLinhaTabela = new Object[5];
-			String cepFormatado = end.getCep().substring(0, 5) + "-" + end.getCep().substring(5, 8);
+		vacinas = controladoraVacina.consultarVacinaController(seletor);
+		
+		this.limparTabelaVacina();
+		
+		DefaultTableModel model = (DefaultTableModel) this.tblListaVacina.getModel();
+		
+		for(VacinaVO vac: this.vacinas) {
 			
-			novaLinhaTabela[0] = cepFormatado;
-			novaLinhaTabela[1] = end.getCidade();
-			novaLinhaTabela[2] = end.getUf();
-			novaLinhaTabela[3] = end.getNumero();
-			novaLinhaTabela[4] = end.getLogradouro();
-			
-			model.addRow(novaLinhaTabela);
+			if(vac.isVacinaAtiva()) {
+				Object[] novaLinhaTabela = new Object[7];
+				
+				novaLinhaTabela[0] = vac.getNome();
+				novaLinhaTabela[1] = vac.getPesquisadorResponsavel();
+				novaLinhaTabela[2] = vac.getPaisDeOrigem();
+				novaLinhaTabela[3] = vac.getEstagioPesquisa();
+				novaLinhaTabela[4] = vac.getFase();
+				novaLinhaTabela[5] = vac.getQuantidadeDoses();
+				novaLinhaTabela[6] = vac.getDataInicioPesquisa();
+				
+				model.addRow(novaLinhaTabela);
+			}
 		}
 	}
+	
+	private void limparTabelaVacina() {
+		tblListaVacina.setModel(new DefaultTableModel(new Object[][] {nomesColunas, }, nomesColunas));
+		btnEditarVacina.setEnabled(false);
+		btnExcluirVacina.setEnabled(false);		
+	}
 
-	protected void limparTabelaVacinas() {
-		//Cria as colunas
-		tblVacinas.setModel(new DefaultTableModel(new Object[][] { nomesColunas, }, nomesColunas));
-		btnEditar.setEnabled(false);
-		btnExcluir.setEnabled(false);
+	public void setVisible(boolean b) {
+		// TODO Auto-generated method stub
+		
 	}
 }

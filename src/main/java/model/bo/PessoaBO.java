@@ -9,8 +9,7 @@ public class PessoaBO {
 		PessoaDAO pessoaDAO = new PessoaDAO();
 		return pessoaDAO.consultarPessoaPorNomeAndCpf(pesquisadorInformadoPeloUsuario);
 	}
-	
-	
+
 	public int cadastrarPessoaBO(PessoaVO pessoaVO) {
 		int retorno = 0;
 		PessoaDAO pessoaDAO = new PessoaDAO();
@@ -24,4 +23,5 @@ public class PessoaBO {
 
 		return  retorno;
 	}
+
 }

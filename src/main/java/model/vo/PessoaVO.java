@@ -26,12 +26,25 @@ public class PessoaVO {
 		this.tipoPessoa = tipoPessoa;
 		this.vacinacoes = vacinacoes;
 	}
-	
+
 	public PessoaVO() {
 		super();
 	}
 
+	@Override
+	public String toString() {
+		
+		String textoVacina = "";
+		
+		if (this.getVacinacoes() == null || this.getVacinacoes().isEmpty()) {
+			textoVacina = "Sem aplicação vacina";
+		} else {
+			textoVacina = vacinacoes.toString();
+		}
 
+		return "ID PESSOA " + this.getIdPessoa() + "\nNome = " + this.getNome() + "\ndata Nascimento = " + this.getDataNascimento() + "\nsexo = "
+				+ this.getSexo() + "\ncpf = " + this.getcpf() + "\ntipo = " + this.getTipoPessoa() + "\nvacinacoes = " + textoVacina;
+	}
 
 	public int getIdPessoa() {
 		return idPessoa;
@@ -73,6 +86,14 @@ public class PessoaVO {
 		this.cpf = cpf;
 	}
 
+	public String getCpf() {
+		return cpf;
+	}
+
+	public void setCpf(String cpf) {
+		this.cpf = cpf;
+	}
+
 	public TipoPessoa getTipoPessoa() {
 		return tipoPessoa;
 	}
@@ -88,12 +109,5 @@ public class PessoaVO {
 	public void setVacinacoes(List<AplicacaoVacinaVO> vacinacoes) {
 		this.vacinacoes = vacinacoes;
 	}
-	
-	@Override
-	public String toString() {
-		return "ID PESSOA " + this.getIdPessoa() + "\nNome = " + this.getNome() + "\ndata Nascimento = " + this.getDataNascimento() + "\nsexo = "
-				+ this.getSexo() + "\ncpf = " + this.getcpf() + "\ntipo = " + this.getTipoPessoa() + "\nvacinacoes = ";
-	}
-
 	
 }

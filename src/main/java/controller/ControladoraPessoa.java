@@ -1,6 +1,7 @@
 package controller;
 
 import model.bo.PessoaBO;
+import model.dao.PessoaDAO;
 import model.vo.PessoaVO;
 
 public class ControladoraPessoa {
@@ -13,6 +14,11 @@ public class ControladoraPessoa {
 	public int cadastrarPessoaController(PessoaVO pessoaVO) {
 		PessoaBO pessoaBO = new PessoaBO();
 		return pessoaBO.cadastrarPessoaBO(pessoaVO);
+	}
+
+	public PessoaVO consultarPessoaPorId(Integer pesquisadorResponsavel) {
+		PessoaDAO pessoaDAO = new PessoaDAO();
+		return pessoaDAO.consultarPessoaPorId(pesquisadorResponsavel);
 	}
 
 
